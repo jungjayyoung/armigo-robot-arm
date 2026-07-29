@@ -1,0 +1,13 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Debug",
+            "type": "shell",
+            "command": "C:\\Users\\KCCISTC\\AppData\\Local\\stm32cube\\bundles\\cmake\\4.3.1+st.1\\bin\\cmake.exe",
+            "args": ["--build", "${workspaceFolder}/build/Debug", "--"],
+            "problemMatcher": "$gcc",
+            "group": { "kind": "build", "isDefault": true }
+        }
+    ]
+}

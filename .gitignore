@@ -1,0 +1,6 @@
+/build/
+/build-*/
+/mx.scratch/
+
+# STM32CubeIDE keeps project settings here; retain them when needed.
+!.settings/
