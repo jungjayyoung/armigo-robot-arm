@@ -52,8 +52,8 @@ extern "C" {
 #define AX12_TEACH_MOVING_SPEED          300U  /* Teaching preset/JOG speed. */
 #define AX12_AUTO_MOVING_SPEED           80U  /* BTN14 sequence speed. Lower = slower. */
 #define AX12_HOME_GOAL_MAX_STEP            1U  /* Goal ramp step for home. */
-#define AX12_TEACH_GOAL_MAX_STEP           3U  /* Goal ramp step for presets. */
-#define AX12_AUTO_GOAL_MAX_STEP            3U  /* Goal ramp step for Auto. */
+#define AX12_TEACH_GOAL_MAX_STEP           6U  /* 3U Goal ramp step for presets. */
+#define AX12_AUTO_GOAL_MAX_STEP            6U  /* 3U Goal ramp step for Auto. */
 /* BTN14 S-curve middle-section amount, in AX-12 position counts per update.
  * This is the only S-curve value intended for adjustment: larger = faster
  * middle section, smaller = smoother/slower movement. */
