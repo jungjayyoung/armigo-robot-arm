@@ -113,10 +113,12 @@ AA 55 CMD LEN PAYLOAD... CHECKSUM
 ## Auto 및 Sharp 센서
 
 1. `START_AUTO(0x06)` 수신 시 첫 목표와 S-Curve를 준비합니다.
-2. SharpSensor 태스크가 20ms마다 ADC 변환을 시작합니다.
-3. ADC 값이 유효 감지 범위에 들어오면 첫 Auto 이동을 해제합니다.
-4. 목표 도착 후 AX_MASTER가 다음 Step을 `RUN_AUTO(0x07)`로 전송합니다.
-5. 이후 Step은 Sharp 감지를 다시 기다리지 않습니다.
+2. SharpSensor 태스크가 40ms마다 ADC 변환을 시작합니다.
+3. GP2Y0A21YK0F의 최근 5개 측정값을 평균내고 거리로 환산합니다.
+4. 유효 측정 범위인 10~30cm가 3회 연속 확인되면 첫 Auto 이동을 해제합니다.
+5. USART2 TelePlot에서 `sharp_mv`, `sharp_cm`, `sharp_detected`를 확인할 수 있습니다.
+6. 목표 도착 후 AX_MASTER가 다음 Step을 `RUN_AUTO(0x07)`로 전송합니다.
+7. 이후 Step은 Sharp 감지를 다시 기다리지 않습니다.
 
 ## E-STOP 자세 고정
 

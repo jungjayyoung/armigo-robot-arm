@@ -36,7 +36,10 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define SHARP_AVERAGE_SAMPLE_COUNT       5U
+#define SHARP_DETECT_CONFIRM_COUNT       3U
+#define SHARP_VALID_MIN_MV             900U
+#define SHARP_VALID_MAX_MV            2600U
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -48,6 +51,8 @@
 
 /* USER CODE BEGIN PV */
 AX12_AppState ax12_app;
+volatile uint16_t g_sharp_mv = 0U;
+volatile uint16_t g_sharp_distance_cm = 80U;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -59,6 +64,32 @@ void MX_FREERTOS_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+static uint16_t Sharp_MillivoltsToDistanceCm(uint16_t mv)
+{
+  /* Typical GP2Y0A21YK0F transfer-curve points. Linear interpolation keeps
+   * the ISR lightweight; final accuracy should be calibrated on the robot. */
+  static const uint16_t voltage_mv[] =
+      {2300U, 1650U, 1300U, 900U, 700U, 600U, 500U, 400U};
+  static const uint8_t distance_cm[] =
+      {10U, 15U, 20U, 30U, 40U, 50U, 60U, 80U};
+
+  if (mv >= voltage_mv[0]) return distance_cm[0];
+  if (mv <= voltage_mv[7]) return distance_cm[7];
+
+  for (uint8_t i = 0U; i < 7U; ++i)
+  {
+    if ((mv <= voltage_mv[i]) && (mv >= voltage_mv[i + 1U]))
+    {
+      uint32_t voltage_span = voltage_mv[i] - voltage_mv[i + 1U];
+      uint32_t distance_span = distance_cm[i + 1U] - distance_cm[i];
+      uint32_t offset = voltage_mv[i] - mv;
+      return (uint16_t)(distance_cm[i] +
+                        ((offset * distance_span) / voltage_span));
+    }
+  }
+  return 80U;
+}
+
 int __io_putchar(int ch)
 {
   HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1U, 0xFFFFU);
@@ -197,8 +228,39 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 {
   if (hadc->Instance == ADC1)
   {
-    uint16_t mv = (uint16_t)(HAL_ADC_GetValue(hadc) * 3300U / 4095U);
-    AX12_AppSetSharpDetected(&ax12_app, (mv >= 450U) && (mv <= 3200U));
+    static uint16_t samples[SHARP_AVERAGE_SAMPLE_COUNT] = {0U};
+    static uint32_t sample_sum = 0U;
+    static uint8_t sample_index = 0U;
+    static uint8_t sample_count = 0U;
+    static uint8_t detect_count = 0U;
+    uint16_t mv =
+        (uint16_t)((uint32_t)HAL_ADC_GetValue(hadc) * 3300U / 4095U);
+
+    sample_sum -= samples[sample_index];
+    samples[sample_index] = mv;
+    sample_sum += mv;
+    sample_index = (uint8_t)((sample_index + 1U) %
+                             SHARP_AVERAGE_SAMPLE_COUNT);
+    if (sample_count < SHARP_AVERAGE_SAMPLE_COUNT) ++sample_count;
+
+    g_sharp_mv = (uint16_t)(sample_sum / sample_count);
+    g_sharp_distance_cm = Sharp_MillivoltsToDistanceCm(g_sharp_mv);
+
+    /* GP2Y0A21YK0F is specified for 10..80 cm. For this project, release
+     * the first Auto step only after three consecutive 10..30 cm samples. */
+    if ((g_sharp_mv >= SHARP_VALID_MIN_MV) &&
+        (g_sharp_mv <= SHARP_VALID_MAX_MV) &&
+        (g_sharp_distance_cm <= 30U))
+    {
+      if (detect_count < SHARP_DETECT_CONFIRM_COUNT) ++detect_count;
+    }
+    else
+    {
+      detect_count = 0U;
+    }
+
+    AX12_AppSetSharpDetected(
+        &ax12_app, detect_count >= SHARP_DETECT_CONFIRM_COUNT);
   }
 }
 
