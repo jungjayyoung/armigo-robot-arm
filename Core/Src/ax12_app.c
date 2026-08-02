@@ -904,14 +904,28 @@ static bool AX12_ProcessFusionCommand(AX12_AppState *app, uint8_t command,
 
   if ((command == FUSION_CMD_HOLD_CURRENT) && (length == 0U))
   {
-    /* An AX-12 retains its old goal while torque is disabled.  Write the
-     * measured pose first, so releasing E-stop cannot resume AUTO or HOME. */
+    /* An AX-12 retains its old goal while torque is disabled.  Do not use
+     * motor_present here: position polling is intentionally throttled while
+     * a goal ramp is active, so that cache can still contain the previous
+     * Auto step.  Read every Present Position synchronously at the instant
+     * HOLD_CURRENT is handled, then latch exactly those live positions. */
     app->auto_start_requested = false;
     app->auto_motion_released = false;
     app->auto_scurve_active = false;
     for (uint8_t i = 0U; i < AX12_SLAVE_MOTOR_COUNT; ++i)
     {
-      uint16_t hold = app->motor_present[i];
+      uint16_t hold = 0U;
+
+      if (AX12_GetPresentPosition(&app->ax12,
+                                  AX12_SLAVE_MOTORS[i].slave_id,
+                                  &hold) != AX12_OK)
+      {
+        /* Never fall back to a stale Auto target when the live read fails. */
+        (void)AX12_SetAllTorque(app, false);
+        return false;
+      }
+
+      app->motor_present[i] = hold;
       app->motor_goal[i] = hold;
       app->motor_target[i] = hold;
       if (AX12_SetGoalPosition(&app->ax12, AX12_SLAVE_MOTORS[i].slave_id,
