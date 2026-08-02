@@ -19,6 +19,8 @@
 #include <stdio.h>
 
 extern AX12_AppState ax12_app;
+extern volatile uint16_t g_sharp_mv;
+extern volatile uint16_t g_sharp_distance_cm;
 
 static osThreadId_t slaveControlTaskHandle;
 static osThreadId_t telemetryTaskHandle;
@@ -46,7 +48,7 @@ static void SharpSensorTask(void *argument)
   for (;;)
   {
     (void)HAL_ADC_Start_IT(&hadc1);
-    osDelay(20U);
+    osDelay(40U);
   }
 }
 
@@ -80,6 +82,10 @@ static void TelemetryTask(void *argument)
                (unsigned int)(i + 1U),
                (unsigned int)ax12_app.motor_present[i]);
       }
+      printf(">sharp_mv:%u\r\n", (unsigned int)g_sharp_mv);
+      printf(">sharp_cm:%u\r\n", (unsigned int)g_sharp_distance_cm);
+      printf(">sharp_detected:%u\r\n",
+             ax12_app.sharp_detected ? 1U : 0U);
     }
     osDelay(100U);
   }
