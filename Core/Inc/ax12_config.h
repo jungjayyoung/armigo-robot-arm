@@ -28,7 +28,7 @@ extern "C" {
 #define FUSION_CMD_HOLD_CURRENT         0x08U /* Latch present pose before E-stop release. */
 #define FUSION_CMD_STATUS_REPLY       0x83U
 #define FUSION_MAX_PAYLOAD_LENGTH       27U
-#define FUSION_STATUS_PAYLOAD_LENGTH    17U /* positions(8)+loads(8)+Auto flags(1) */
+#define FUSION_STATUS_PAYLOAD_LENGTH    20U /* positions(8)+loads(8)+flags(1)+Sharp mV(2)+cm(1) */
 #define HC05_LINK_TIMEOUT_MS           500U
 
 #define AX12_SLAVE_MOTOR_COUNT           4U

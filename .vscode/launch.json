@@ -7,6 +7,9 @@
             "name": "STM32Cube: Launch AX_SLAVE (ST-Link)",
             "cwd": "${workspaceFolder}",
             "preBuild": "${command:st-stm32-ide-debug-launch.build}",
+            "serverInterface": "SWD",
+            "serverInterfaceFrequency": "1000",
+            "serverReset": "Connect under reset",
             "runEntry": "main",
             "imagesAndSymbols": [
                 {

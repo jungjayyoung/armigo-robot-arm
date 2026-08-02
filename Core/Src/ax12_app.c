@@ -3,6 +3,10 @@
 #include <stdio.h>
 #include <string.h>
 
+extern volatile uint16_t g_sharp_mv;
+extern volatile uint16_t g_sharp_distance_cm;
+
+
 static AX12_AppState *s_console_app = NULL;
 static UART_HandleTypeDef *s_console_uart = NULL;
 static uint8_t s_console_rx_byte = 0U;
@@ -778,6 +782,10 @@ static bool AX12_SendFusionStatus(AX12_AppState *app)
   }
   payload[16U] = (app->sharp_detected ? 0x01U : 0U) |
                  (app->auto_motion_released ? 0x02U : 0U);
+  payload[17U] = (uint8_t)(g_sharp_mv & 0xFFU);
+  payload[18U] = (uint8_t)((g_sharp_mv >> 8U) & 0xFFU);
+  payload[19U] = (uint8_t)((g_sharp_distance_cm > 255U) ?
+                           255U : g_sharp_distance_cm);
 
   return AX12_SendFusionPacket(app, FUSION_CMD_STATUS_REPLY, payload,
                                sizeof(payload));
