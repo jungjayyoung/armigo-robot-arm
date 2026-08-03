@@ -247,10 +247,11 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
     g_sharp_distance_cm = Sharp_MillivoltsToDistanceCm(g_sharp_mv);
 
     /* GP2Y0A21YK0F is specified for 10..80 cm. For this project, release
-     * the first Auto step only after three consecutive 10..30 cm samples. */
+     * the first Auto step only after three consecutive 10..15 cm samples. */
     if ((g_sharp_mv >= SHARP_VALID_MIN_MV) &&
         (g_sharp_mv <= SHARP_VALID_MAX_MV) &&
-        (g_sharp_distance_cm <= 30U))
+        (g_sharp_distance_cm >= 10U) &&
+        (g_sharp_distance_cm <= 17U))
     {
       if (detect_count < SHARP_DETECT_CONFIRM_COUNT) ++detect_count;
     }
