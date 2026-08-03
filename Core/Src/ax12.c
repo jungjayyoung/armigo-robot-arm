@@ -643,6 +643,17 @@ AX12_Result AX12_SetTorque(AX12_Handle *ax12, uint8_t id, bool enabled)
   return AX12_WriteByte(ax12, id, AX12_ADDR_TORQUE_ENABLE, enabled ? 1U : 0U);
 }
 
+AX12_Result AX12_SetTorqueLimit(AX12_Handle *ax12, uint8_t id,
+                                uint16_t torque_limit)
+{
+  if (torque_limit > 1023U)
+  {
+    return AX12_ERROR_ARGUMENT;
+  }
+
+  return AX12_WriteWord(ax12, id, AX12_ADDR_TORQUE_LIMIT, torque_limit);
+}
+
 AX12_Result AX12_SetGoalPosition(AX12_Handle *ax12, uint8_t id,
                                 uint16_t position)
 {

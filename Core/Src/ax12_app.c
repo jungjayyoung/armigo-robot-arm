@@ -1155,6 +1155,16 @@ bool AX12_AppInit(AX12_AppState *app, UART_HandleTypeDef *ax12_uart,
 
     if (id == AX12_SLAVE_2_ID)
     {
+      if (AX12_SetTorqueLimit(&app->ax12, id,
+                              AX12_GRIPPER_TORQUE_LIMIT) != AX12_OK)
+      {
+        printf("AX12 slave init: gripper torque limit setup failed\r\n");
+        return false;
+      }
+    }
+
+    if (id == AX12_SLAVE_2_ID)
+    {
       uint16_t max_torque = 0U;
       uint16_t torque_limit = 0U;
       AX12_Result max_result = AX12_ReadWord(&app->ax12, id,

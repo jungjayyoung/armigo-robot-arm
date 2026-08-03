@@ -41,6 +41,10 @@ extern "C" {
 #define AX12_SLAVE_3_ID                   3U
 #define AX12_SLAVE_4_ID                   5U
 
+/* The gripper is Slave ID 2. Limit its output to about 29% of AX-12A
+ * maximum torque so a closed gripper does not remain in a stall condition. */
+#define AX12_GRIPPER_TORQUE_LIMIT       300U
+
 #define AX12_GOAL_MIN                     0U
 #define AX12_GOAL_MAX                  1023U
 #define AX12_DEFAULT_GOAL               512U

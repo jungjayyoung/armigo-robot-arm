@@ -101,6 +101,8 @@ AX12_Result AX12_SetPositionMode(AX12_Handle *ax12, uint8_t id);
 AX12_Result AX12_SetWheelMode(AX12_Handle *ax12, uint8_t id);
 AX12_Result AX12_SetLed(AX12_Handle *ax12, uint8_t id, bool enabled);
 AX12_Result AX12_SetTorque(AX12_Handle *ax12, uint8_t id, bool enabled);
+AX12_Result AX12_SetTorqueLimit(AX12_Handle *ax12, uint8_t id,
+                                uint16_t torque_limit);
 AX12_Result AX12_SetGoalPosition(AX12_Handle *ax12, uint8_t id, uint16_t position);
 AX12_Result AX12_SetMovingSpeed(AX12_Handle *ax12, uint8_t id, uint16_t speed);
 
