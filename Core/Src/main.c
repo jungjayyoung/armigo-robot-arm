@@ -38,6 +38,7 @@
 /* USER CODE BEGIN PD */
 #define SHARP_AVERAGE_SAMPLE_COUNT       5U
 #define SHARP_DETECT_CONFIRM_COUNT       3U
+#define SHARP_RELEASE_CONFIRM_COUNT      3U
 #define SHARP_VALID_MIN_MV             900U
 #define SHARP_VALID_MAX_MV            2600U
 /* USER CODE END PD */
@@ -233,6 +234,8 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
     static uint8_t sample_index = 0U;
     static uint8_t sample_count = 0U;
     static uint8_t detect_count = 0U;
+    static uint8_t release_count = 0U;
+    bool sharp_detected = ax12_app.sharp_detected;
     uint16_t mv =
         (uint16_t)((uint32_t)HAL_ADC_GetValue(hadc) * 3300U / 4095U);
 
@@ -246,22 +249,33 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
     g_sharp_mv = (uint16_t)(sample_sum / sample_count);
     g_sharp_distance_cm = Sharp_MillivoltsToDistanceCm(g_sharp_mv);
 
-    /* GP2Y0A21YK0F is specified for 10..80 cm. For this project, release
-     * the first Auto step only after three consecutive 10..15 cm samples. */
+    /* GP2Y0A21YK0F is specified for 10..80 cm. For this project, assert
+     * detection after three consecutive 10..17 cm samples. Require three
+     * consecutive invalid samples before releasing detection so ADC noise
+     * cannot reset the Leader's five-second countdown. */
     if ((g_sharp_mv >= SHARP_VALID_MIN_MV) &&
         (g_sharp_mv <= SHARP_VALID_MAX_MV) &&
         (g_sharp_distance_cm >= 10U) &&
         (g_sharp_distance_cm <= 17U))
     {
+      release_count = 0U;
       if (detect_count < SHARP_DETECT_CONFIRM_COUNT) ++detect_count;
+      if (detect_count >= SHARP_DETECT_CONFIRM_COUNT)
+      {
+        sharp_detected = true;
+      }
     }
     else
     {
       detect_count = 0U;
+      if (release_count < SHARP_RELEASE_CONFIRM_COUNT) ++release_count;
+      if (release_count >= SHARP_RELEASE_CONFIRM_COUNT)
+      {
+        sharp_detected = false;
+      }
     }
 
-    AX12_AppSetSharpDetected(
-        &ax12_app, detect_count >= SHARP_DETECT_CONFIRM_COUNT);
+    AX12_AppSetSharpDetected(&ax12_app, sharp_detected);
   }
 }
 
