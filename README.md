@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./docs/assets/armigo-main.png" width="100%" alt="ARMIGO 로봇팔 대표 이미지">
+</p>
+
 # ARMIGO 4-Axis Robot Arm
 
 STM32 NUCLEO-F411RE 2대와 DYNAMIXEL AX-12A 8개를 이용해 제작한  
