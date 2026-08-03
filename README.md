@@ -25,8 +25,18 @@ STM32 NUCLEO-F411RE 2대와 DYNAMIXEL AX-12A 8개를 이용해 제작한
 
 Teaching 모드에서 저장한 동작을 선택한 Preset 순서에 따라 자동으로 실행합니다.
 
+#### 로봇팔 동작
+
 <p align="center">
   <img src="./docs/assets/teaching-playback.gif" width="720" alt="ARMIGO 로봇팔 Teaching 실행 모드">
+</p>
+
+#### 제어기 화면
+
+Teaching Preset 선택, Step 실행 및 동작 상태가 표시되는 제어기 화면입니다.
+
+<p align="center">
+  <img src="./docs/assets/teaching-controller.gif" width="720" alt="ARMIGO Teaching 실행 제어기 화면">
 </p>
 
 ---
@@ -105,13 +115,15 @@ armigo-robot-arm/
 └── docs/
     └── assets/
         ├── manual-control.gif
-        └── teaching-playback.gif
+        ├── teaching-playback.gif
+        └── teaching-controller.gif
 ```
 
 - `master/`: 마스터 로봇팔 제어 펌웨어
 - `slave/`: 슬레이브 로봇팔 제어 펌웨어
 - `docs/assets/manual-control.gif`: 수동 조작 모드 결과물 GIF
-- `docs/assets/teaching-playback.gif`: Teaching 실행 모드 결과물 GIF
+- `docs/assets/teaching-playback.gif`: Teaching 실행 로봇팔 동작 GIF
+- `docs/assets/teaching-controller.gif`: Teaching 실행 제어기 화면 GIF
 
 각 하위 폴더의 README에는 해당 컨트롤러의 세부 구현 내용이 정리되어 있습니다.
 
