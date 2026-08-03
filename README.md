@@ -29,8 +29,6 @@ Teaching 모드에서 저장한 동작을 선택한 Preset 순서에 따라 자�
   <img src="./docs/assets/teaching-playback.gif" width="720" alt="ARMIGO 로봇팔 Teaching 실행 모드">
 </p>
 
-> GIF 파일을 각각 `docs/assets/manual-control.gif`, `docs/assets/teaching-playback.gif` 경로에 업로드하면 위 영역에 표시됩니다.
-
 ---
 
 ## 프로젝트 개요
