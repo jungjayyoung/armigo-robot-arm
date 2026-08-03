@@ -9,11 +9,23 @@ STM32 NUCLEO-F411RE 2대와 DYNAMIXEL AX-12A 8개를 이용해 제작한
 
 ## 결과물
 
+### 1. 수동 조작 모드
+
+마스터 로봇팔을 직접 움직이면 슬레이브 로봇팔이 실시간으로 동작을 따라갑니다.
+
 <p align="center">
-  <img src="./docs/assets/result.gif" width="720" alt="ARMIGO 로봇팔 결과물">
+  <img src="./docs/assets/manual-control.gif" width="720" alt="ARMIGO 로봇팔 수동 조작 모드">
 </p>
 
-> 완성된 GIF 파일을 `docs/assets/result.gif` 경로에 업로드하면 위 영역에 표시됩니다.
+### 2. Teaching 실행 모드
+
+Teaching 모드에서 저장한 동작을 선택한 Preset 순서에 따라 자동으로 실행합니다.
+
+<p align="center">
+  <img src="./docs/assets/teaching-playback.gif" width="720" alt="ARMIGO 로봇팔 Teaching 실행 모드">
+</p>
+
+> GIF 파일을 각각 `docs/assets/manual-control.gif`, `docs/assets/teaching-playback.gif` 경로에 업로드하면 위 영역에 표시됩니다.
 
 ---
 
@@ -90,12 +102,14 @@ armigo-robot-arm/
 │
 └── docs/
     └── assets/
-        └── result.gif
+        ├── manual-control.gif
+        └── teaching-playback.gif
 ```
 
 - `master/`: 마스터 로봇팔 제어 펌웨어
 - `slave/`: 슬레이브 로봇팔 제어 펌웨어
-- `docs/assets/result.gif`: README에 표시할 최종 결과물 GIF
+- `docs/assets/manual-control.gif`: 수동 조작 모드 결과물 GIF
+- `docs/assets/teaching-playback.gif`: Teaching 실행 모드 결과물 GIF
 
 각 하위 폴더의 README에는 해당 컨트롤러의 세부 구현 내용이 정리되어 있습니다.
 
