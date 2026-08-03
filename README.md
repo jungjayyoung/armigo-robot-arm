@@ -396,3 +396,100 @@ UART 설정과 AX12 축 개수를 점검한 뒤 개별 모터를 교차 테스�
 - Slave: `Armigos/AX_SLAVE`
 
 원본 저장소의 커밋 이력을 유지한 상태로 각각 `master/`, `slave/` 디렉터리에 통합합니다.
+
+---
+
+## 3D 설계 및 제작
+
+ARMIGO 로봇팔의 프레임, 그리퍼, 제어기 케이스 및 보조 부품은 직접 모델링하고 3D 프린팅하여 제작했습니다.
+
+### 사용 도구
+
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="./docs/assets/design/bambu-studio.png" width="280" alt="Bambu Studio">
+      <br>
+      <b>Bambu Studio</b>
+      <br>
+      3D 프린팅 슬라이싱 및 출력 설정
+    </td>
+    <td align="center" width="50%">
+      <img src="./docs/assets/design/rhino8.png" width="280" alt="Rhino 8">
+      <br>
+      <b>Rhino 8</b>
+      <br>
+      로봇팔 부품 및 제어기 케이스 3D 모델링
+    </td>
+  </tr>
+</table>
+
+### 3D 프린터 및 필라멘트
+
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="./docs/assets/design/bambu-p2s.png" width="340" alt="Bambu Lab P2S">
+      <br>
+      <b>Bambu Lab P2S</b>
+    </td>
+    <td align="center" width="50%">
+      <img src="./docs/assets/design/bambu-a1-mini.png" width="340" alt="Bambu Lab A1 mini">
+      <br>
+      <b>Bambu Lab A1 mini</b>
+    </td>
+  </tr>
+</table>
+
+사용한 필라멘트:
+
+- **PLA Matte**: 로봇팔 프레임, 케이스 및 일반 구조물
+- **PLA Basic**: 기본 구조 부품 및 테스트 출력
+- **TPU 95A HF**: 물체와 접촉하는 유연한 그리퍼 Blade
+
+### 3D 프린팅 부품 전체 구성
+
+<p align="center">
+  <img src="./docs/assets/design/parts-layout.png" width="850" alt="ARMIGO 3D 프린팅 부품 전체 구성">
+</p>
+
+로봇팔 링크, 베이스, 그리퍼 Blade, 제어기 케이스와 패널 등 출력 전에 배치한 전체 부품 구성입니다.
+
+### 출력 과정
+
+<table>
+  <tr>
+    <td align="center" width="33%">
+      <img src="./docs/assets/design/printing-body.jpg" width="100%" alt="제어기 케이스 출력">
+      <br>
+      <b>제어기 케이스 출력</b>
+    </td>
+    <td align="center" width="33%">
+      <img src="./docs/assets/design/printing-panel.jpg" width="100%" alt="제어기 패널 출력">
+      <br>
+      <b>제어기 패널 출력</b>
+    </td>
+    <td align="center" width="33%">
+      <img src="./docs/assets/design/printing-gripper.jpg" width="100%" alt="TPU 그리퍼 Blade 출력">
+      <br>
+      <b>TPU 그리퍼 Blade 출력</b>
+    </td>
+  </tr>
+</table>
+
+### 제작 결과
+
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="./docs/assets/design/fabrication-result-robot-arm.png" width="100%" alt="완성된 ARMIGO 로봇팔">
+      <br>
+      <b>완성된 로봇팔 및 그리퍼</b>
+    </td>
+    <td align="center" width="50%">
+      <img src="./docs/assets/design/fabrication-result-controller.png" width="100%" alt="완성된 ARMIGO 제어 시스템">
+      <br>
+      <b>제어기와 Master-Slave 구성</b>
+    </td>
+  </tr>
+</table>
