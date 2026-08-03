@@ -1,0 +1,11 @@
+# CMake build output is local to each computer.
+/build/
+/build-*/
+
+# IDE/user-specific metadata
+/.settings/
+/.vscode/ipch/
+
+# Editor temporary files
+*.bak
+*.tmp
